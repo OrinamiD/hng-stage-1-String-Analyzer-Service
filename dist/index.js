@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { connectedDb, port } from "./configs/db.configs.js";
+import router from "./routes/index.route.js";
 const app = express();
 app.use(express.json());
 app.use(helmet());
@@ -37,7 +38,7 @@ process.on("uncaughtException", (err) => {
 process.on("unhandledRejection", (reason) => {
     console.error("Unhandled Rejection:", reason);
 });
-// app.use("/api", router);
+app.use("/api", router);
 // final error handler (for other errors)
 app.use((err, req, res, next) => {
     console.error("Unhandled error:", err.message);

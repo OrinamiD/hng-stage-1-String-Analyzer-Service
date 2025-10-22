@@ -6,6 +6,7 @@ import helmet from "helmet";
 
 import rateLimit from "express-rate-limit";
 import { connectedDb, port } from "./configs/db.configs.js";
+import router from "./routes/index.route.js";
 
 const app = express();
 
@@ -59,7 +60,7 @@ process.on("unhandledRejection", (reason) => {
   console.error("Unhandled Rejection:", reason);
 });
 
-// app.use("/api", router);
+app.use("/api", router);
 
 // final error handler (for other errors)
 app.use(
