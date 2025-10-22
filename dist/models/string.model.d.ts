@@ -10,7 +10,7 @@ export interface IString extends Document {
         sha256_hash: string;
         character_frequency_map: Record<string, number>;
     };
-    createdAt: Date;
+    created_at: Date;
 }
 declare const StringModel: mongoose.Model<IString, {}, {}, {}, mongoose.Document<unknown, {}, IString, {}, {}> & IString & Required<{
     _id: unknown;

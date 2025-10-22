@@ -11,7 +11,7 @@ export interface IString extends Document {
     sha256_hash: string;
     character_frequency_map: Record<string, number>;
   };
-  createdAt: Date;
+  created_at: Date;
 }
 
 const stringSchema = new Schema<IString>(
@@ -26,8 +26,9 @@ const stringSchema = new Schema<IString>(
       sha256_hash: { type: String },
       character_frequency_map: { type: Map, of: Number },
     },
+    created_at: { type: Date },
   },
-  { timestamps: { createdAt: true, updatedAt: false } }
+  { timestamps: true }
 );
 
 const StringModel = mongoose.model<IString>("StringModel", stringSchema);

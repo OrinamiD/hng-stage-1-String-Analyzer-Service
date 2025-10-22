@@ -1,19 +1,13 @@
 import { type Request, type Response } from "express";
-import {
-  deleteByValue,
-  getAllStringsService,
-  parseNaturalLanguageQuery,
-  stringToAnalyze,
-} from "../services/string.service.js";
+
 import StringModel from "../models/string.model.js";
+import { deleteByValue, getAllStringsService, parseNaturalLanguageQuery, stringToAnalyze } from "../services/string.service.js";
+
+// Create and analyze strings
 
 export const analyzeString = async (req: Request, res: Response) => {
   try {
     const { value } = req.body;
-
-    if (typeof value !== "string") {
-      return res.status(422).json({ error: "value must be a string" });
-    }
 
     const properties = await stringToAnalyze(value);
 
@@ -22,7 +16,9 @@ export const analyzeString = async (req: Request, res: Response) => {
     });
 
     if (existing) {
-      return res.status(409).json({ error: "String already exists" });
+      return res
+        .status(409)
+        .json({ error: "String already exists in the system" });
     }
 
     const newData = await StringModel.create({
@@ -32,10 +28,10 @@ export const analyzeString = async (req: Request, res: Response) => {
     });
 
     return res.status(201).json({
-      message: "Created successfully",
       id: newData.id,
       value: newData.value,
       properties: newData.properties,
+      created_at: new Date(),
     });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
@@ -43,6 +39,7 @@ export const analyzeString = async (req: Request, res: Response) => {
 };
 
 // get specific string
+
 export const getAStringValue = async (req: Request, res: Response) => {
   try {
     const { value } = req.params; // ✅ Extract from URL
@@ -74,6 +71,12 @@ export const getAStringValue = async (req: Request, res: Response) => {
 export const getAllStrings = async (req: Request, res: Response) => {
   try {
     const filters = req.query;
+    if (!filters) {
+      return res
+        .status(400)
+        .json({ error: "Invalid query parameter values or types" });
+    }
+
     const result = await getAllStringsService(filters);
     res.status(200).json(result);
   } catch (error) {
@@ -82,15 +85,29 @@ export const getAllStrings = async (req: Request, res: Response) => {
   }
 };
 
+//This Natural Language Filtering endpoint
+
 export const filterByNaturalLanguage = async (req: Request, res: Response) => {
   try {
     const query = req.query.query as string;
+
+    if (!query) {
+      return res
+        .status(400)
+        .json({ error: "Unable to parse natural language query" });
+    }
 
     // Step 1: Parse natural language into filters
     const { parsedFilters, original } = parseNaturalLanguageQuery(query);
 
     // Step 2: Query the DB using the parsed filters
     const result = await getAllStringsService(parsedFilters);
+
+    if (!result) {
+      return res
+        .status(422)
+        .json({ error: "Query parsed but resulted in conflicting filters" });
+    }
 
     // Step 3: Return structured response
     return res.status(200).json({
@@ -104,7 +121,7 @@ export const filterByNaturalLanguage = async (req: Request, res: Response) => {
   } catch (error: any) {
     console.error("Natural language filter error:", error.message);
 
-    if (error.message.includes("Unable to parse")) {
+    if (error.message.includes("Unable to parse natural language query")) {
       return res
         .status(400)
         .json({ error: "Unable to parse natural language query" });

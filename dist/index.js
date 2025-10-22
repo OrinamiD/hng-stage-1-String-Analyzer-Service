@@ -3,7 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { connectedDb, port } from "./configs/db.configs.js";
-import router from "./routes/index.route.js";
+import router from "./routes/string.route.js";
 const app = express();
 app.use(express.json());
 app.use(helmet());

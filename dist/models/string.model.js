@@ -10,7 +10,8 @@ const stringSchema = new Schema({
         sha256_hash: { type: String },
         character_frequency_map: { type: Map, of: Number },
     },
-}, { timestamps: { createdAt: true, updatedAt: false } });
+    created_at: { type: Date },
+}, { timestamps: true });
 const StringModel = mongoose.model("StringModel", stringSchema);
 export default StringModel;
 //# sourceMappingURL=string.model.js.map

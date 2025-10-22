@@ -1,6 +1,6 @@
 import * as crypto from "crypto";
 import StringModel from "../models/string.model.js";
-//
+// Create and analyze strings
 export const stringToAnalyze = async (value) => {
     const length = value.length;
     const is_palindrome = value.toLowerCase() === value.toLowerCase().split("").reverse().join("");
@@ -33,7 +33,6 @@ export const stringValue = async (value) => {
 //get all string with filtering
 export const getAllStringsService = async (filters) => {
     const query = {};
-    // Apply filters dynamically
     if (filters.is_palindrome !== undefined) {
         query["properties.is_palindrome"] = filters.is_palindrome === "true";
     }
@@ -52,14 +51,13 @@ export const getAllStringsService = async (filters) => {
     if (filters.contains_character) {
         query.value = { $regex: filters.contains_character, $options: "i" };
     }
-    // Fetch matching strings
     const strings = await StringModel.find();
     // Format the response data
     const formattedData = strings.map((s) => ({
         id: s._id,
         value: s.value,
         properties: s.properties,
-        created_at: s.createdAt,
+        created_at: s.created_at,
     }));
     console.log(formattedData);
     return {

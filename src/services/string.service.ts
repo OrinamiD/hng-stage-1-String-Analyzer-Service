@@ -1,7 +1,7 @@
 import * as crypto from "crypto";
 import StringModel from "../models/string.model.js";
 
-//
+// Create and analyze strings
 
 export const stringToAnalyze = async (value: string) => {
   const length = value.length;
@@ -46,7 +46,6 @@ export const stringValue = async (value: string) => {
 export const getAllStringsService = async (filters: any) => {
   const query: any = {};
 
-  // Apply filters dynamically
   if (filters.is_palindrome !== undefined) {
     query["properties.is_palindrome"] = filters.is_palindrome === "true";
   }
@@ -70,7 +69,7 @@ export const getAllStringsService = async (filters: any) => {
     query.value = { $regex: filters.contains_character, $options: "i" };
   }
 
-  // Fetch matching strings
+
   const strings = await StringModel.find();
 
   // Format the response data
@@ -78,7 +77,7 @@ export const getAllStringsService = async (filters: any) => {
     id: s._id,
     value: s.value,
     properties: s.properties,
-    created_at: s.createdAt,
+    created_at: s.created_at,
   }));
 
   console.log(formattedData);

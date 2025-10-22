@@ -1,9 +1,9 @@
-import express, { Router } from "express";
+// import express, { Router } from "express";
 
-const router: Router = express.Router();
+// const router: Router = express.Router();
 
-import stringRoute from "./string.route.js";
+// import stringRoute from "./string.route.js";
 
-router.use("/analyze", stringRoute);
+// router.use("/analyze", stringRoute);
 
-export default router;
+// export default router;
