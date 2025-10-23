@@ -18,7 +18,7 @@ app.use(cors());
 
 app.use(
   rateLimit({
-    windowMs: 60 * 1000, // 1 minute (60,000 ms)
+    windowMs: 15 * 60 * 1000, // 1 minute (60,000 ms)
     max: 5, // each IP to 5 requests
     message: {
       success: false,
