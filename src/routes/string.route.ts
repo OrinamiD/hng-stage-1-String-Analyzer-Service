@@ -11,13 +11,9 @@ import { validateString } from "../middlewares/string.middleware.js";
 const router: Router = express.Router();
 
 router.post("/strings", validateString, analyzeString);
-
-router.get("/strings/:value", getAStringValue);
-
+router.get("/strings/:string_value", getAStringValue);
 router.get("/strings", getAllStrings);
-
-router.get("/filter-by-natural-language", filterByNaturalLanguage);
-
-router.delete("/strings/:value", deleteString);
+router.get("/strings/filter-by-natural-language", filterByNaturalLanguage);
+router.delete("/strings/:string_value", deleteString);
 
 export default router;

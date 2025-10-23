@@ -6,27 +6,22 @@ export interface IString extends Document {
   properties: {
     length: number;
     is_palindrome: boolean;
-    unique_value: number;
-    word_count: number;
     sha256_hash: string;
-    character_frequency_map: Record<string, number>;
+    language: string;
   };
   created_at: Date;
 }
 
 const stringSchema = new Schema<IString>(
   {
-    id: { type: String },
-    value: { type: String, trim: true },
+    id: { type: String, required: true, unique: true },
+    value: { type: String, required: true, trim: true },
     properties: {
-      length: { type: Number },
-      is_palindrome: { type: Boolean },
-      unique_value: { type: Number },
-      word_count: { type: Number },
-      sha256_hash: { type: String },
-      character_frequency_map: { type: Map, of: Number },
+      length: { type: Number, required: true },
+      is_palindrome: { type: Boolean, required: true },
+      sha256_hash: { type: String, required: true },
+      language: { type: String, default: "en" }
     },
-    created_at: { type: Date },
   },
   { timestamps: true }
 );
